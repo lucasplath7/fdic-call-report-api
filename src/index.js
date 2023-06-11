@@ -1,7 +1,8 @@
 import https from 'https';
-
-const parseString = require('xml2js').parseString;
-const soapRequest = require('easy-soap-request');
+import xml2js from 'xml2js';
+import soapRequest from 'easy-soap-request';
+// const parseString = require('xml2js').parseString;
+// const soapRequest = require('easy-soap-request');
 require('dotenv').config();
 
 const RETRIEVE_PERIODS = 'http://cdr.ffiec.gov/public/services/RetrieveReportingPeriods';
@@ -90,7 +91,7 @@ async function retrieveCallReport(username, passwordText, fedId, periodEndDate){
 
   let report = {};
   
-  parseString(text, function(err,result){
+  xml2js.parseString(text, function(err,result){
     Object.keys(result.xbrl).forEach(key => {
       if(key.includes('cc:')) {
         report[key.replace('cc:', '')] = result.xbrl[key][0]._;
