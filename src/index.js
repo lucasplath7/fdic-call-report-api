@@ -1,6 +1,7 @@
 import https from 'https';
 import xml2js from 'xml2js';
-import soapRequest from 'easy-soap-request';
+import axios from 'axios';
+// import soapRequest from 'easy-soap-request';
 // const parseString = require('xml2js').parseString;
 // const soapRequest = require('easy-soap-request');
 // require('dotenv').config();
@@ -38,13 +39,55 @@ const agent = new https.Agent({
   rejectUnauthorized: false
 });
 
+function soapRequest(opts = {
+  method: 'POST',
+  url: '',
+  headers: {},
+  xml: '',
+  timeout: 10000,
+  proxy: {},
+  maxBodyLength: Infinity,
+  maxContentLength: Infinity,
+  extraOpts: {},
+}) {
+  const {
+    method,
+    url,
+    headers,
+    xml,
+    timeout,
+    proxy,
+    maxBodyLength,
+    maxContentLength,
+    extraOpts,
+    httpsAgent,
+  } = opts;
+  return axios({
+    method: method || 'POST',
+    url,
+    headers,
+    data: xml,
+    timeout,
+    proxy,
+    maxBodyLength,
+    maxContentLength,
+    httpsAgent,
+  }).then((response) => ({
+    response: {
+      headers: response.headers,
+      body: response.data,
+      statusCode: response.status,
+    },
+  }));
+};
+
 async function retrieveReportingPeriods(username, passwordText) {
   const methodBody = `<RetrieveReportingPeriods xmlns="http://cdr.ffiec.gov/public/services">
                         <dataSeries>Call</dataSeries>
                       </RetrieveReportingPeriods>`;
   const xml = createXml(username, passwordText, methodBody);
   const header = createHeader(RETRIEVE_PERIODS);
-  const { response } = await soapRequest({ url: url, headers: header, xml: xml, timeout: 10000, extraOpts: {httpsAgent: agent}});
+  const { response } = await soapRequest({ url: url, headers: header, xml: xml, timeout: 10000, httpsAgent: agent});
   const dates = response.body.substring(
       response.body.indexOf('<RetrieveReportingPeriodsResult>') + 32,
       response.body.indexOf('</RetrieveReportingPeriodsResult>')
@@ -60,7 +103,7 @@ async function retrieveFilers(username, passwordText, fromPeriodDate, toPeriodDa
   const methodBody = `<RetrieveFilersSinceDate xmlns="http://cdr.ffiec.gov/public/services"><dataSeries>Call</dataSeries><reportingPeriodEndDate>${toPeriodDate}</reportingPeriodEndDate><lastUpdateDateTime>${fromPeriodDate}</lastUpdateDateTime></RetrieveFilersSinceDate>`;
   const xml = createXml(username, passwordText, methodBody);
   const header = createHeader(RETRIEVE_FILERS)
-  const { response } = await soapRequest({ url: url, headers: header, xml: xml, timeout: 30000, extraOpts: {httpsAgent: agent} });
+  const { response } = await soapRequest({ url: url, headers: header, xml: xml, timeout: 30000, httpsAgent: agent });
 
   const filers = response.body.substring(
       response.body.indexOf('<RetrieveFilersSinceDateResult>') + 31,
@@ -78,7 +121,7 @@ async function retrieveCallReport(username, passwordText, fedId, periodEndDate){
   const xml = createXml(username, passwordText, methodBody);
   const header = createHeader(RETRIEVE_REPORT)
   
-  const { response } = await soapRequest({ url: url, headers: header, xml: xml, timeout: 30000, extraOpts: {httpsAgent: agent} });
+  const { response } = await soapRequest({ url: url, headers: header, xml: xml, timeout: 30000, httpsAgent: agent });
 
 
   const base64 = response.body.substring(
