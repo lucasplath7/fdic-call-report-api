@@ -1,6 +1,6 @@
-import https from 'https';
-import xml2js from 'xml2js';
-import axios from 'axios';
+const https = require('https');
+const xml2js = require('xml2js');
+const axios = require('axios');
 
 const RETRIEVE_PERIODS = 'http://cdr.ffiec.gov/public/services/RetrieveReportingPeriods';
 const RETRIEVE_FILERS = 'http://cdr.ffiec.gov/public/services/RetrieveFilersSinceDate';
@@ -44,7 +44,6 @@ function soapRequest(opts = {
   proxy: {},
   maxBodyLength: Infinity,
   maxContentLength: Infinity,
-  extraOpts: {},
 }) {
   const {
     method,
@@ -55,7 +54,6 @@ function soapRequest(opts = {
     proxy,
     maxBodyLength,
     maxContentLength,
-    extraOpts,
     httpsAgent,
   } = opts;
   return axios({
@@ -141,13 +139,7 @@ async function retrieveCallReport(username, passwordText, fedId, periodEndDate){
   return report;
 }
 
-// module.exports = {
-//   retrieveReportingPeriods,
-//   retrieveFilers,
-//   retrieveCallReport
-// }
-
-export {
+module.exports = {
   retrieveReportingPeriods,
   retrieveFilers,
   retrieveCallReport
