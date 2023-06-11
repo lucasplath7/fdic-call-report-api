@@ -1,6 +1,6 @@
 {
   "name": "fdic-call-report-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Three functions to be incorporated into an api that allow a user to access call report data for any fdic insured bank.  Pre-requisite: an fdic api username and key.",
   "type": "module",
   "main": "dist/index.js",
