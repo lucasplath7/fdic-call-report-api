@@ -3,7 +3,7 @@ import xml2js from 'xml2js';
 import soapRequest from 'easy-soap-request';
 // const parseString = require('xml2js').parseString;
 // const soapRequest = require('easy-soap-request');
-require('dotenv').config();
+// require('dotenv').config();
 
 const RETRIEVE_PERIODS = 'http://cdr.ffiec.gov/public/services/RetrieveReportingPeriods';
 const RETRIEVE_FILERS = 'http://cdr.ffiec.gov/public/services/RetrieveFilersSinceDate';
