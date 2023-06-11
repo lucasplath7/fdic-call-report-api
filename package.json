@@ -3,10 +3,7 @@
   "version": "1.0.8",
   "description": "Three functions to be incorporated into an api that allow a user to access call report data for any fdic insured bank.  Pre-requisite: an fdic api username and key.",
   "type": "module",
-  "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --out-dir dist"
