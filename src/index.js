@@ -141,7 +141,13 @@ async function retrieveCallReport(username, passwordText, fedId, periodEndDate){
   return report;
 }
 
-module.exports = {
+// module.exports = {
+//   retrieveReportingPeriods,
+//   retrieveFilers,
+//   retrieveCallReport
+// }
+
+export {
   retrieveReportingPeriods,
   retrieveFilers,
   retrieveCallReport
