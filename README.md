@@ -48,3 +48,7 @@ retrieveCallReport
     - fedId (string): valid fed id for financial institution
    
     - periodEndDate (string): valid report end period date
+
+  returns:
+    
+    - object: keys are the codes for call report values with associated values
